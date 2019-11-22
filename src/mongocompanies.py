@@ -37,6 +37,7 @@ def extractStartups(start, compan):
 
 
 def toMongo(coords, typ, i, db, collec):
+    '''crea un documento en Mongo'''
     dicc = {
         'name': f"{typ} {i}",
         'type': f"{typ}",
@@ -48,6 +49,7 @@ def toMongo(coords, typ, i, db, collec):
 
 
 def generateGeoquery(typeLoc, lng, lat, radius):
+    '''genera una Geoquery'''
     return {"type": typeLoc, "location":
             {"$near":
              {"$geometry":

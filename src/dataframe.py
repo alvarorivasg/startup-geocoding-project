@@ -19,7 +19,7 @@ def infoForDataframe(coords, collec, airport_coord):
 
 
 def puntuation(i, dataframe):
-    '''para poder generar un ranking entre las distintas posibles localizaciones'''
+    '''puntúa una localización concreta para poder generar un ranking'''
     if (dataframe.iloc[i]["NumStarbucks"] == 0) or (dataframe.iloc[i]["NumSchools"] == 0) or (dataframe.iloc[i]["NumStartups"] == 0) or (dataframe.iloc[i]["NumOldCompanies"] >= 5):
         score = 0
     else:
@@ -29,6 +29,8 @@ def puntuation(i, dataframe):
 
 
 def rankingLeader(dataframe):
+    '''genera una nueva columna en el dataframe que recoge la puntuación de cada localización
+    y extrae las coordenadas de la localización con mejor resultado'''
     punt = []
     for i in range(0, len(dataframe.index)):
         punt.append(puntuation(i, dataframe))

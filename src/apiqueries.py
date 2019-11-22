@@ -54,5 +54,10 @@ def extractCoords(results):
 
 
 def getAddress(listcoords):
-    g = geocoder.google(listcoords, method='reverse', key=os.getenv("GOOGLE"))
-    return g.json['address']
+    '''extrae una dirección a partir de un par de coordenadas'''
+    if not os.getenv("GOOGLE"):
+        raise ValueError("No token")
+    else:
+        g = geocoder.google(listcoords, method='reverse',
+                            key=os.getenv("GOOGLE"))
+        return g.json['address']

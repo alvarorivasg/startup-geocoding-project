@@ -8,17 +8,20 @@ from os import system
 
 
 def main():
+    # En primer lugar, extraigo las variables necesarias para obtener coordenadas de mis bases de datos
     _, companies = connectCollection('companies', 'companies')
     compan = list(companies.find({"offices.city": "Montreal", "founded_year": {
                   "$lt": 2008}, "offices.longitude": {"$ne": None}, "offices.latitude": {"$ne": None}}))
     db, startups = connectCollection('companies', 'startups')
     start = list(startups.find())
+    # Genero listas de coordenadas para cada uno de los puntos de interés
     old_companies = extractBadCompanies(compan)
     succ_startups = extractStartups(start, compan)
     schools = textSearch("primary school")
     starbucks = textSearch("starbucks")
     vegan_locations = textSearch("vegan restaurant")
     airport_coord = locRequest("airport montreal")
+    # genero una nueva colección Mongo en la que meto los puntos de interés
     try:
         db.collec.drop()
     except:
@@ -30,6 +33,7 @@ def main():
         for i in range(0, len(v[1])):
             toMongo(v[1][i], v[0], i, db, collec)
     db.collec.create_index([("location", pymongo.GEOSPHERE)])
+    # genero, con datos extraídos de geoQueries, un dataframe sobre el que calcularé el punto idóneo para establecer la empresa
     dataframe = pd.DataFrame(columns=["LocationCoords", "NumStarbucks",
                                       "NumSchools", "NumOldCompanies", "NumStartups", "DistToAirport"])
     for i in range(0, len(vegan_locations)):
