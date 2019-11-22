@@ -1,9 +1,10 @@
 from pymongo import MongoClient
 from src.apiqueries import locRequest
 
+client = MongoClient()
+
 
 def connectCollection(database, collection):
-    client = MongoClient()
     db = client[database]
     coll = db[collection]
     return db, coll

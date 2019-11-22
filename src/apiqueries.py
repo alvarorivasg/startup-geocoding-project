@@ -26,7 +26,7 @@ def textSearch(query, lat=45.508888, lng=-73.561668, radius=15000, maxPages=5):
     }
     list_of_places = []
     nextPageToken = None
-    while maxPages != 0:
+    while maxPages != 0:  # introducido por Marc. Sabiendo que la API de Google nunca retornará más de tres páginas, podría poner aquí un while true, ¿verdad?
         if nextPageToken:
             params["pagetoken"] = nextPageToken
         res = requests.get(url, params=params)
@@ -44,10 +44,15 @@ def textSearch(query, lat=45.508888, lng=-73.561668, radius=15000, maxPages=5):
 
 
 def extractCoords(results):
-    '''Complementa la función textSearch'''
+    '''Complementa la función textSearch. No sé si no debería haberlo hecho así.'''
     listademovidas = []
     for el in range(0, len(results)):
         location = results[el]['geometry']['location']
         listilla = [location['lat'], location['lng']]
         listademovidas.append(listilla)
     return listademovidas
+
+
+def getAddress(listcoords):
+    g = geocoder.google(listcoords, method='reverse', key=os.getenv("GOOGLE"))
+    return g.json['address']

@@ -1,10 +1,9 @@
 from src.mongocompanies import connectCollection, extractBadCompanies, extractStartups, toMongo
 from src.dataframe import infoForDataframe, puntuation, rankingLeader
-from src.apiqueries import textSearch, locRequest
+from src.apiqueries import textSearch, locRequest, getAddress
 import pymongo
 import pandas as pd
 import folium
-import webbrowser
 from os import system
 
 
@@ -25,19 +24,11 @@ def main():
     except:
         pass
     db, collec = connectCollection('companies', 'collec')
-
-    # 100% esto se puede refactorizar, aunque no me ha resultado tan simple como parece
-    for i in range(0, len(old_companies)):
-        toMongo(old_companies[i], "old_company", i, db, collec)
-    for i in range(0, len(succ_startups)):
-        toMongo(succ_startups[i], "startup", i, db, collec)
-    for i in range(0, len(schools)):
-        toMongo(schools[i], "school", i, db, collec)
-    for i in range(0, len(starbucks)):
-        toMongo(starbucks[i], "starbucks", i, db, collec)
-    for i in range(0, len(vegan_locations)):
-        toMongo(vegan_locations[i], "restaurant", i, db, collec)
-
+    dicci = {'old_company': old_companies, 'startup': succ_startups,
+             'school': schools, 'starbucks': starbucks, 'restaurant': vegan_locations}
+    for v in dicci.items():
+        for i in range(0, len(v[1])):
+            toMongo(v[1][i], v[0], i, db, collec)
     db.collec.create_index([("location", pymongo.GEOSPHERE)])
     dataframe = pd.DataFrame(columns=["LocationCoords", "NumStarbucks",
                                       "NumSchools", "NumOldCompanies", "NumStartups", "DistToAirport"])
@@ -45,6 +36,8 @@ def main():
         values = infoForDataframe(vegan_locations[i], collec, airport_coord)
         dataframe.loc[i] = values
     def_loc = rankingLeader(dataframe)
+    address = getAddress(def_loc)
+    print("La localización más adecuada para los requisitos de la empresa es", address)
     def_map = folium.Map(location=[45.508888, -73.561668], zoom_start=14)
     folium.Marker(def_loc, radius=2, icon=folium.Icon(
         icon='home', color='green')).add_to(def_map)

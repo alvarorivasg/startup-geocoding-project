@@ -1,6 +1,8 @@
 from src.mongocompanies import generateGeoquery
 from haversine import haversine
 
+# refactorizable. Podría además devolver el df formado
+
 
 def infoForDataframe(coords, collec, airport_coord):
     '''para nutrir de valores un dataframe con respecto a unas coordenadas'''
