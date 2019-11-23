@@ -29,9 +29,9 @@ def main():
     db, collec = connectCollection('companies', 'collec')
     dicci = {'old_company': old_companies, 'startup': succ_startups,
              'school': schools, 'starbucks': starbucks, 'restaurant': vegan_locations}
-    for v in dicci.items():
-        for i in range(0, len(v[1])):
-            toMongo(v[1][i], v[0], i, db, collec)
+    for tupl in dicci.items():
+        for i in range(0, len(tupl[1])):
+            toMongo(tupl[1][i], tupl[0], i, db, collec)
     db.collec.create_index([("location", pymongo.GEOSPHERE)])
     # genero, con datos extraídos de geoQueries, un dataframe sobre el que calcularé el punto idóneo para establecer la empresa
     dataframe = pd.DataFrame(columns=["LocationCoords", "NumStarbucks",

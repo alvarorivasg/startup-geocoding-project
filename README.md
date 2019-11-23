@@ -11,7 +11,7 @@ I had to deal with multiple requirements:
 - They all LOVE Starbucks.
 - There has to be an Airport around.
 
-I dealt with a csv from Angel.io and a json database from Crunchbase, which I managed using pymongo. Information about restaurants, schools, Starbucks was obtained from Google Places API. I decided to focus on the city of Montreal, and to use existing vegan restaurants locations as the potential home to the startup. We need to keep the CEO happy and well-fed...
+I dealt with a csv from Angel.io and a json database from Crunchbase, which I managed using pymongo. Information about restaurants, schools, and Starbucks was obtained from Google Places API. I decided to focus on the city of Montreal, and to use existing vegan restaurants locations as the potential home to the startup. We need to keep the CEO happy and well-fed...
 
 Using GeoQueries, I created a ranking based on the mutiple criteria explained above. I produced a map with Folium representing the location who performed the best in my punctuation system. It is located in the Mile End, a nice neighborhood in Montreal where some of my friends live in :')
 
